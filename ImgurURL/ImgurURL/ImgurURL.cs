@@ -12,14 +12,13 @@ namespace ImgurURL
 
         private string ToBase62(ulong number)
         {
-            var alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             var n = number;
             ulong basis = 62;
             var ret = "";
             while (n > 0)
             {
                 ulong temp = n % basis;
-                ret = alphabet[(int)temp] + ret;
+                ret = URL_ALPHABET[(int)temp] + ret;
                 n = (n / basis);
 
             }
