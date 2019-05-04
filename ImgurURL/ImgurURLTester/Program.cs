@@ -4,59 +4,42 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using ImgurURL;
 
 namespace ImgurURLTester
 {
     class Program
-    {
-        static int URL_COUNT = 10;
+    { 
         static Random rnd = new Random();
-    
+
+        static ImgurURLGrabber grabber = new ImgurURLGrabber();
 
         static void Main(string[] args)
         {
-            Console.WriteLine("MAX URLS: " + URL_COUNT);
-            for(int i = 0; i < URL_COUNT; i++)
+            while (true)
             {
-                ImgurURL.ImgurURL test = new ImgurURL.ImgurURL();
-                string url = test.GetImgurURL(rnd.Next(999999999).ToString());
-
-                switch(CheckURLAvailable(url))
-                {
-                    case true:
-                        Console.WriteLine(i + ": " + url);
-                        break;
-                    case false:
-                        i--;
-                        break;
-                }
+                OpenURL();
+                Console.ReadLine();
             }
-            Console.ReadLine();
         }
 
-        static bool CheckURLAvailable(string url)
+        private static void OpenURL()
         {
-            bool isAvailable = false;
+            bool foundLink = false;
 
-            using (WebClient test = new WebClient())
+            while(foundLink == false)
             {
-                string fullURL = "https://www.imgur.com/" + url;
+                string url = grabber.GetImgurURL(rnd.Next(999999999).ToString());
 
-                try
+                if(grabber.CheckURLAvailable(url))
                 {
-                    var html = test.DownloadString(fullURL);
-                    isAvailable = true;
-
+                    System.Diagnostics.Process.Start(url);
+                    Console.WriteLine("Press ENTER for next one, or close application");
+                    foundLink = true;
                 }
-                catch(WebException ex)
-                {
-                    isAvailable = false;
-                }
-
-                
-
             }
-            return isAvailable;
         }
+
+        
     }
 }

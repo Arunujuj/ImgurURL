@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ImgurURL
 {
-    public class ImgurURL
+    public class ImgurURLGrabber
     {
         public static string URL_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -27,7 +28,30 @@ namespace ImgurURL
 
         public string GetImgurURL(string number)
         {
-            return ToBase62(Convert.ToUInt32(number));
+            return "https://www.imgur.com/" + ToBase62(Convert.ToUInt32(number));
+        }
+
+        public bool CheckURLAvailable(string url)
+        {
+            bool isAvailable = false;
+
+            using (WebClient test = new WebClient())
+            {
+                try
+                {
+                    var html = test.DownloadString(url);
+                    isAvailable = true;
+
+                }
+                catch (WebException ex)
+                {
+                    isAvailable = false;
+                }
+
+
+
+            }
+            return isAvailable;
         }
 
     }
