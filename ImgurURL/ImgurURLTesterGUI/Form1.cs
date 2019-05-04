@@ -55,9 +55,30 @@ namespace ImgurURLTesterGUI
             pictureBox1.Image = new Bitmap(stream);
         }
 
+        public void SaveImage()
+        {
+            string name = label1.Text;
+
+            name = name.Replace("https://www.imgur.com/", "");
+
+
+            pictureBox1.Image.Save("downloads/" + name + ".png");
+        }
+
         private void label1_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(label1.Text);
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            if(!System.IO.Directory.Exists("downloads"))
+            {
+                System.IO.Directory.CreateDirectory("downloads");
+            }
+
+            SaveImage();
+
         }
     }
 }
